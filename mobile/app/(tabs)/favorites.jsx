@@ -1,25 +1,17 @@
-import {
-  View,
-  Text,
-  Alert,
-  ScrollView,
-  TouchableOpacity,
-  FlatList,
-} from "react-native";
-import React, { useEffect, useState } from "react";
-import { useUser, useClerk} from "@clerk/clerk-expo";
+import { View, Text, Alert, ScrollView, TouchableOpacity, FlatList } from "react-native";
+import { useClerk, useUser } from "@clerk/clerk-expo";
+import { useEffect, useState } from "react";
 import { API_URL } from "../../constants/api";
 import { favoritesStyles } from "../../assets/styles/favorites.styles";
 import { COLORS } from "../../constants/colors";
+import { Ionicons } from "@expo/vector-icons";
 import RecipeCard from "../../components/RecipeCard";
 import NoFavoritesFound from "../../components/NoFavoritesFound";
-import { Ionicons } from "@expo/vector-icons";
 import LoadingSpinner from "../../components/LoadingSpinner";
 
 const FavoritesScreen = () => {
   const { signOut } = useClerk();
   const { user } = useUser();
-
   const [favoriteRecipes, setFavoriteRecipes] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -31,11 +23,12 @@ const FavoritesScreen = () => {
 
         const favorites = await response.json();
 
-        // transform the data to match the recipe card component's expected format
+        // transform the data to match the RecipeCard component's expected format
         const transformedFavorites = favorites.map((favorite) => ({
           ...favorite,
           id: favorite.recipeId,
         }));
+
         setFavoriteRecipes(transformedFavorites);
       } catch (error) {
         console.log("Error loading favorites", error);
@@ -49,7 +42,7 @@ const FavoritesScreen = () => {
   }, [user.id]);
 
   const handleSignOut = () => {
-    Alert.alert("Logout", "Are you sure you want to logout??", [
+    Alert.alert("Logout", "Are you sure you want to logout?", [
       { text: "Cancel", style: "cancel" },
       { text: "Logout", style: "destructive", onPress: signOut },
     ]);
@@ -62,10 +55,7 @@ const FavoritesScreen = () => {
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={favoritesStyles.header}>
           <Text style={favoritesStyles.title}>Favorites</Text>
-          <TouchableOpacity
-            style={favoritesStyles.logoutButton}
-            onPress={handleSignOut}
-          >
+          <TouchableOpacity style={favoritesStyles.logoutButton} onPress={handleSignOut}>
             <Ionicons name="log-out-outline" size={22} color={COLORS.text} />
           </TouchableOpacity>
         </View>
@@ -73,7 +63,7 @@ const FavoritesScreen = () => {
         <View style={favoritesStyles.recipesSection}>
           <FlatList
             data={favoriteRecipes}
-            renderItem={(item) => <RecipeCard recipe={item} />}
+            renderItem={({ item }) => <RecipeCard recipe={item} />}
             keyExtractor={(item) => item.id.toString()}
             numColumns={2}
             columnWrapperStyle={favoritesStyles.row}
@@ -86,5 +76,4 @@ const FavoritesScreen = () => {
     </View>
   );
 };
-
 export default FavoritesScreen;
