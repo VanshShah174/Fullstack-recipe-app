@@ -2,8 +2,6 @@
 
 A modern, full-stack recipe discovery application that helps you find, save, and explore delicious recipes from around the world. Built with React Native (Expo) for seamless mobile experience and Node.js/Express for robust backend services.
 
-![RecipeRally Screenshot](mobile/assets/images/screenshot-for-readme.png)
-
 ## ✨ Features
 
 ### 📱 Mobile App (React Native + Expo)
@@ -258,4 +256,4 @@ If you encounter any issues or have questions:
 
 Built with ❤️ using modern web technologies for the ultimate recipe discovery experience!
 
-**RecipeRally** - Where every meal becomes an adventure! 🍽️✨ 
+**RecipeRally** - Where every meal becomes an adventure! 🍽️✨
