@@ -1,4 +1,4 @@
-import { View, Text, Alert, ScrollView, TouchableOpacity, FlatList } from "react-native";
+import { View, Text, Alert, ScrollView, TouchableOpacity, FlatList, Platform } from "react-native";
 import { useClerk, useUser } from "@clerk/clerk-expo";
 import { useEffect, useState } from "react";
 import { API_URL } from "../../constants/api";
@@ -8,12 +8,14 @@ import { Ionicons } from "@expo/vector-icons";
 import RecipeCard from "../../components/RecipeCard";
 import NoFavoritesFound from "../../components/NoFavoritesFound";
 import LoadingSpinner from "../../components/LoadingSpinner";
+import { useRouter } from "expo-router";
 
 const FavoritesScreen = () => {
   const { signOut } = useClerk();
   const { user } = useUser();
   const [favoriteRecipes, setFavoriteRecipes] = useState([]);
   const [loading, setLoading] = useState(true);
+  const router = useRouter();
 
   useEffect(() => {
     const loadFavorites = async () => {
@@ -41,11 +43,22 @@ const FavoritesScreen = () => {
     loadFavorites();
   }, [user.id]);
 
-  const handleSignOut = () => {
-    Alert.alert("Logout", "Are you sure you want to logout?", [
-      { text: "Cancel", style: "cancel" },
-      { text: "Logout", style: "destructive", onPress: signOut },
-    ]);
+  const handleSignOut = async () => {
+    const doSignOut = async () => {
+      await signOut();
+      router.replace("/(auth)/sign-in");
+    };
+
+    if (Platform.OS === "web") {
+      if (window.confirm("Are you sure you want to logout?")) {
+        await doSignOut();
+      }
+    } else {
+      Alert.alert("Logout", "Are you sure you want to logout?", [
+        { text: "Cancel", style: "cancel" },
+        { text: "Logout", style: "destructive", onPress: doSignOut },
+      ]);
+    }
   };
 
   if (loading) return <LoadingSpinner message="Loading your favorites..." />;
