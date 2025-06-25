@@ -11,7 +11,7 @@ const PORT = ENV.PORT || 5001;
 
 app.use(cors({
   origin: [
-    "https://reciperally--bvcftw32xo.expo.app"
+    "https://reciperally--1iek0b213q.expo.app"
   ],
   credentials: true,
 }));

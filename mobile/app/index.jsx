@@ -19,7 +19,7 @@ export default function LandingPage() {
         />
       </View>
       <View style={styles.bottomSheet}>
-        <Text style={styles.title}>Welcome to Recipe Master</Text>
+        <Text style={styles.title}>Welcome to Recipe Rally</Text>
         <Text style={styles.subtitle}>
           Discover, cook, and enjoy delicious recipes from around the world! Your next favorite meal is just a tap away. 🍲👩‍🍳
         </Text>
